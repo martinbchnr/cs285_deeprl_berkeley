@@ -33,7 +33,7 @@ class ACAgent(BaseAgent):
         self.replay_buffer = ReplayBuffer()
 
         
-        
+       
     def estimate_advantage(self, ob_no, next_ob_no, re_n, terminal_n):
         
         # TODO Implement the following pseudocode:

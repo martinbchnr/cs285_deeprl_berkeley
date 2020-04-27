@@ -38,17 +38,22 @@ class DQNCritic(BaseCritic):
         q_tp1_values = q_func(self.obs_tp1_ph, self.ac_dim, scope='target_q_func', reuse=False)
 
         if self.double_q:
-            # You must fill this part for Q2 of the Q-learning potion of the homework.
+            # You must fill this part for Q2 of the Q-learning portion of the homework.
             # In double Q-learning, the best action is selected using the Q-network that
             # is being updated, but the Q-value for this action is obtained from the
             # target Q-network. See page 5 of https://arxiv.org/pdf/1509.06461.pdf for more details.
-            TODO
+            self.q_t_for_tp1 = q_func(self.obs_tp1_ph, self.ac_dim, scope='q_func', reuse=True)
+            
+            idx = tf.stack([tf.range(tf.shape(self.obs_t_ph)[0]), 
+                            tf.cast(tf.argmax(self.q_t_for_tp1, axis=1), tf.int32)], axis=1)
+            
+            q_tp1 = tf.gather_nd(q_tp1_values, idx)
         else:
             # q values of the next timestep
             q_tp1 = tf.reduce_max(q_tp1_values, axis=1)
 
         #####################
-4
+
         # TODO calculate the targets for the Bellman error
         # HINT1: as you saw in lecture, this would be:
             #currentReward + self.gamma * qValuesOfNextTimestep * (1 - self.done_mask_ph)
@@ -72,8 +77,8 @@ class DQNCritic(BaseCritic):
         # variables of the Q-function network and target network, respectively
         # HINT1: see the "scope" under which the variables were constructed in the lines at the top of this function
         # HINT2: use tf.get_collection to look for all variables under a certain scope
-        q_func_vars = tf.get_collection(scope='q_func')
-        target_q_func_vars = tf.get_collection(scope='target_q_func')
+        q_func_vars = tf.trainable_variables(scope='q_func')
+        target_q_func_vars = tf.trainable_variables(scope='target_q_func')
 
         #####################
 

@@ -223,8 +223,11 @@ class RL_Trainer(object):
     
 
     def train_agent(self):
-        print('\nTraining agent using sampled data from replay buffer...')
+        
         for train_step in range(self.params['num_agent_train_steps_per_iter']):
+
+            if train_step % 4 == 0:
+                print('\nTraining agent using sampled data from replay buffer...'+train_step)
 
             # TODO sample some data from the data buffer
             # HINT1: use the agent's sample function

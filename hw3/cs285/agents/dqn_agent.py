@@ -60,7 +60,7 @@ class DQNAgent(object):
         
 
         if perform_random_action:
-            action = random.randint(self.num_actions)
+            action = np.random.randint(self.num_actions)
         else:
             # TODO query the policy to select action
             # HINT: you cannot use "self.last_obs" directly as input
@@ -118,7 +118,7 @@ class DQNAgent(object):
             feed_dict = {
                 self.critic.learning_rate: self.optimizer_spec.lr_schedule.value(self.t),
                 self.critic.obs_t_ph: ob_no, # current observation(state)
-                self.critic.act_t_ph: ac_no, # current action
+                self.critic.act_t_ph: ac_na, # current action
                 self.critic.rew_t_ph: re_n,  # current reward
                 self.critic.obs_tp1_ph: next_ob_no, # next observation(state)
                 self.critic.done_mask_ph: terminal_n,
